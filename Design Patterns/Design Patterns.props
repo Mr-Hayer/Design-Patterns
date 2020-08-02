@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<ImportGroup Label="PropertySheets" />
+	<PropertyGroup>
+		<HYR_DESIGN_PATTERN Condition="'$(HYR_DESIGN_PATTERN)'==''">$(GITREPODIR)\Design Patterns\</HYR_DESIGN_PATTERN>
+	</PropertyGroup>
+	<PropertyGroup Label="UserMacros" />
+	<PropertyGroup />
+	<ItemDefinitionGroup>
+		<ClCompile>
+			<AdditionalIncludeDirectories>$(HYR_DESIGN_PATTERN)Includes\;$(HYR_DESIGN_PATTERN)Sources\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+			<PreprocessorDefinitions>anyType</PreprocessorDefinitions>
+		</ClCompile>
+		<Link>
+			<AdditionalLibraryDirectories>%(AdditionalIncludeDirectories)</AdditionalLibraryDirectories>
+			<AdditionalDependencies></AdditionalDependencies>
+		</Link>
+	</ItemDefinitionGroup>
+	<ItemGroup />
+</Project>
