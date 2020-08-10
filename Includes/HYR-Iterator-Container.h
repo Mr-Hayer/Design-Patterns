@@ -2,6 +2,7 @@
 #ifndef _HYR_ITERATOR_CONTAINER_H
 #define _HYR_ITERATOR_CONTAINER_H
 
+#include <exception>
 /*
 *	@Brief: Iterator to container for "range-based for loop"
 *			- Suitable for any Object that impelements begin(), end()
@@ -51,6 +52,18 @@ namespace HYR {
 			Item(std::string _Name, std::string _Description) :
 				m_Name(_Name), m_Description(_Description)
 			{}
+
+			Item(Item& _Other)
+			{
+				m_Name = _Other.m_Name;
+				m_Description = _Other.m_Description;
+			}
+
+			Item(Item&& _Other)
+			{
+				std::swap(m_Name,_Other.m_Name);
+				std::swap(m_Description, _Other.m_Description);
+			}
 			std::string m_Name;
 			std::string m_Description;
 
@@ -60,32 +73,81 @@ namespace HYR {
 		class Kitchen
 		{
 			using Iterator = IteratorBase<Kitchen>;
+#define MaxSize  100000
 		public:
-			Kitchen()
-			{}
+			Kitchen(size_t _TotElements) noexcept(false)			
+			{
+				if (_TotElements > MaxSize)
+					throw std::out_of_range("Maximum alloweded elements exeeded");
+
+				m_Elements = _TotElements;
+
+				// Allocate space
+				m_Items = new Item*[_TotElements];
+				if (!m_Items)
+					throw std::bad_alloc();
+
+				// set *m_Item to nullptr
+				for (size_t itr = 0; itr < m_Elements; itr++)
+					m_Items[itr] = nullptr;
+			}
+
+			~Kitchen()
+			{
+				// freeing dynamic memory
+				while (m_AllocatedElements != 0)
+				{
+					delete m_Items[m_AllocatedElements];
+					m_Items[m_AllocatedElements] = nullptr;
+					--m_AllocatedElements;
+				}
+				delete[] m_Items;
+			}
+
+			Item* operator[](size_t _Pos)
+			{	// operator to access items as an array
+				if (_Pos > m_Elements)
+					return nullptr;
+
+				return m_Items[_Pos];
+			}
 
 			void Emplace(Item& _Item)
 			{
-				m_Items.emplace_back(_Item);
+				if (m_AllocatedElements < m_Elements)
+				{	// Allocate new item
+					Item* TempItem = new Item(_Item);
+					m_Items[m_AllocatedElements] = TempItem;
+					++m_AllocatedElements;
+				}
 				return;
 			}
 
 			void Emplace(Item&& _Item)
 			{
-				m_Items.emplace_back(_Item);
+				if (m_AllocatedElements < m_Elements)
+				{	// Allocate new item
+					Item* TempItem = new Item(_Item);
+					m_Items[m_AllocatedElements] = TempItem;
+					++m_AllocatedElements;
+				}
+
 				return;
 			}
 
 			uint32_t Count()
 			{
-				return m_Items.size();
+				return m_AllocatedElements;
 			}
 
-			Item GetItems()
-			{
-				// to be finished
-				return m_Items.at(0);
+			Item* GetItems(size_t _Pos)
+			{			
+				if (_Pos > m_Elements)
+					return nullptr;
+
+				return m_Items[_Pos];
 			}
+
 			Iterator begin()
 			{
 				return Iterator(this, 0);
@@ -93,11 +155,13 @@ namespace HYR {
 
 			Iterator end()
 			{
-				return Iterator(this, m_Items.size());
+				return Iterator(this, m_AllocatedElements);
 			}
 
 		private:
-			std::vector<Item> m_Items;;
+			Item** m_Items;
+			size_t m_Elements;
+			size_t m_AllocatedElements;
 		};
 
 		template<typename _Cont>

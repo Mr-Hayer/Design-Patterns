@@ -10,7 +10,7 @@ using namespace HYR::PATTERN;
 
 int main()
 {
-	Kitchen MyKitchen;
+	Kitchen MyKitchen(10);
 	MyKitchen.Emplace(Item("Door", "Main door to enter in kitchen"));
 	MyKitchen.Emplace(Item("Fridge", "Used to keep the food cold"));
 	MyKitchen.Emplace(Item("Induction stove", "Used to cook the food"));
@@ -18,10 +18,14 @@ int main()
 	MyKitchen.Emplace(Item("Microwave", "Used to warm the food in short time"));
 	std::cout<<"Tot Items: "<<MyKitchen.Count()<<'\n';
 
+	size_t Count = 0;
+
 	for (auto& Itr : MyKitchen)
 	{
-		auto Item = Itr.GetItems();
-		std::cout << "Item Name: " << Item.m_Name.c_str()<<'\n';
-		std::cout << "Item Description: " << Item.m_Description.c_str() << '\n';
+		auto Item= Itr[Count];
+		std::cout << "Item Name: " << Item->m_Name.c_str()<<'\n';
+		std::cout << "Item Description: " << Item->m_Description.c_str() << '\n';
+
+		++Count;
 	}
 }
