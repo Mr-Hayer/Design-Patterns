@@ -158,6 +158,7 @@
     <ClInclude Include="..\Includes\HYR-Decorator.h" />
     <ClInclude Include="..\Includes\HYR-Adapter.h" />
     <ClInclude Include="..\Includes\HYR-Bridge.h" />
+    <ClInclude Include="..\Includes\HYR-Elapsed Time-Counter.h" />
     <ClInclude Include="..\Includes\HYR-Observer.h" />
     <ClInclude Include="..\Includes\HYR-Singleton.h" />
     <ClInclude Include="..\Includes\HYR-Strategy.h" />

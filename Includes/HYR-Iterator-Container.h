@@ -24,6 +24,10 @@ namespace HYR {
 			IteratorBase& operator++()
 			{
 				++m_Pos;
+
+				if (m_Container)
+					m_Container->SetPosition(m_Pos);
+
 				return *this;
 			}
 
@@ -75,12 +79,13 @@ namespace HYR {
 			using Iterator = IteratorBase<Kitchen>;
 #define MaxSize  100000
 		public:
-			Kitchen(size_t _TotElements) noexcept(false)			
+			Kitchen(size_t _TotElements) noexcept(false)
+				:
+				m_Pos{ 0 },
+				m_Elements{_TotElements}
 			{
 				if (_TotElements > MaxSize)
 					throw std::out_of_range("Maximum alloweded elements exeeded");
-
-				m_Elements = _TotElements;
 
 				// Allocate space
 				m_Items = new Item*[_TotElements];
@@ -140,12 +145,12 @@ namespace HYR {
 				return m_AllocatedElements;
 			}
 
-			Item* GetItems(size_t _Pos)
+			Item* GetItems()
 			{			
-				if (_Pos > m_Elements)
+				if (m_Pos > m_Elements)
 					return nullptr;
 
-				return m_Items[_Pos];
+				return m_Items[m_Pos];
 			}
 
 			Iterator begin()
@@ -158,10 +163,16 @@ namespace HYR {
 				return Iterator(this, m_AllocatedElements);
 			}
 
+			void SetPosition(size_t _Pos)
+			{
+				m_Pos = _Pos;
+			}
+
 		private:
 			Item** m_Items;
 			size_t m_Elements;
 			size_t m_AllocatedElements;
+			size_t m_Pos;
 		};
 
 		template<typename _Cont>

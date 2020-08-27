@@ -18,14 +18,10 @@ int main()
 	MyKitchen.Emplace(Item("Microwave", "Used to warm the food in short time"));
 	std::cout<<"Tot Items: "<<MyKitchen.Count()<<'\n';
 
-	size_t Count = 0;
-
 	for (auto& Itr : MyKitchen)
 	{
-		auto Item= Itr[Count];
-		std::cout << "Item Name: " << Item->m_Name.c_str()<<'\n';
-		std::cout << "Item Description: " << Item->m_Description.c_str() << '\n';
+		std::cout << "Item Name: " << Itr.GetItems()->m_Name.c_str()<<'\n';
+		std::cout << "Item Description: " << Itr.GetItems()->m_Description.c_str() << '\n';
 
-		++Count;
 	}
 }
