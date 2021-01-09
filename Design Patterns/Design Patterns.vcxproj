@@ -160,6 +160,7 @@
     <ClInclude Include="..\Includes\HYR-Bridge.h" />
     <ClInclude Include="..\Includes\HYR-Elapsed Time-Counter.h" />
     <ClInclude Include="..\Includes\HYR-Observer.h" />
+    <ClInclude Include="..\Includes\HYR-RingBuffer.h" />
     <ClInclude Include="..\Includes\HYR-Singleton.h" />
     <ClInclude Include="..\Includes\HYR-Strategy.h" />
     <ClInclude Include="..\Includes\HYR-Iterator-Container.h" />
