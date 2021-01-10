@@ -39,7 +39,6 @@ namespace HYR {
 
             bool IsBufferFull() noexcept override
             {
-                m_IsBufferFull = m_MaxSize == (m_Head+1) ? true : false;
                 return m_IsBufferFull;
             }
 
@@ -84,7 +83,7 @@ namespace HYR {
                     Buffer.emplace_back(Val);
                 }
 
-                return 0;
+                return ClearBuffer(true);
             }
 
             int32_t ClearBuffer(bool bClear) noexcept override
@@ -115,8 +114,8 @@ namespace HYR {
                 {
                     if (typeid(BufferType) == typeid(uint8_t) || typeid(BufferType) == typeid(uint16_t) ||
                         typeid(BufferType) == typeid(uint32_t) || typeid(BufferType) == typeid(uint64_t) ||
-                        typeid(BufferType) == typeid(int8_t) || typeid(BufferType) == typeid(uint16_t) ||
-                        typeid(BufferType) == typeid(uint32_t) || typeid(BufferType) == typeid(uint64_t))
+                        typeid(BufferType) == typeid(int8_t) || typeid(BufferType) == typeid(int16_t) ||
+                        typeid(BufferType) == typeid(int32_t) || typeid(BufferType) == typeid(int64_t))
                     {
                         m_Buffer[Idx] = 0;
                     }
@@ -139,7 +138,7 @@ namespace HYR {
             RingBuffer& operator = (const RingBuffer&& _Other) = delete;
         };
 
-        typedef RingBuffer<int8_t> RingBufferI8;
+        typedef RingBuffer<int8_t>  RingBufferI8;
         typedef RingBuffer<int16_t> RingBufferI16;
         typedef RingBuffer<int32_t> RingBufferI32;
         typedef RingBuffer<int64_t> RingBufferI64;
@@ -147,9 +146,9 @@ namespace HYR {
         typedef RingBuffer<uint16_t> RingBufferU16;
         typedef RingBuffer<uint32_t> RingBufferU32;
         typedef RingBuffer<uint64_t> RingBufferU64;
-        typedef RingBuffer<float> RingBufferSgl;
-        typedef RingBuffer<double> RingBufferDbl;
-        typedef RingBuffer<bool> RingBufferBool;
+        typedef RingBuffer<float>   RingBufferSgl;
+        typedef RingBuffer<double>  RingBufferDbl;
+        typedef RingBuffer<bool>    RingBufferBool;
 
         // class RingBufferU8 : public RingBuffer<uint8_t>
     }
